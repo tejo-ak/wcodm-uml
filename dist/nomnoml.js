@@ -1362,6 +1362,7 @@
                 spacing: (+d.spacing) || 40,
                 stroke: d.stroke || '#33322E',
                 title: d.title || '',
+                qualifier: d.qualifier || '.',
                 zoom: +d.zoom || 1,
                 acyclicer: d.acyclicer === 'greedy' ? 'greedy' : undefined,
                 ranker: parseRanker(d.ranker),
@@ -1591,6 +1592,7 @@
             g.setLineDash([]);
             g.save();
             g.translate(x, y);
+            sanitizeQualifier(node);
             node.compartments.forEach(function (part, i) {
                 var textStyle = i == 0 ? style.title : style.body;
                 g.save();
@@ -1600,6 +1602,20 @@
                 g.restore();
             });
             g.restore();
+        }
+        function sanitizeQualifier(node) {
+            if (!config.qualifier) {
+                return;
+            }
+            let part = node.compartments[0];
+            for (let i = 0; i < part.lines.length; i++) {
+                let line = part.lines[i];
+                let qDx = line.indexOf(config.qualifier);
+                if (qDx != -1) {
+                    let newName = line.substr(0, qDx);
+                    part.lines[i] = newName;
+                }
+            }
         }
         function strokePath(p) {
             if (config.edges === 'rounded') {

@@ -126,6 +126,7 @@ export function parse(source: string): ParsedDiagram {
 			spacing: (+d.spacing) || 40,
 			stroke: d.stroke || '#33322E',
 			title: d.title || '',
+			qualifier: d.qualifier || '.',
 			zoom: +d.zoom || 1,
 			acyclicer: d.acyclicer === 'greedy' ? 'greedy' : undefined,
 			ranker: parseRanker(d.ranker),
