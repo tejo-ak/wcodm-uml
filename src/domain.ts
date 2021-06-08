@@ -24,6 +24,7 @@ export interface Config {
   zoom: number
   acyclicer: 'greedy' | undefined
   ranker: Ranker
+  qualifier?: string
 }
 
 export interface Measurer {

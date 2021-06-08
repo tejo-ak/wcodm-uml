@@ -64,12 +64,13 @@ export function render(graphics: Graphics, config: Config, compartment: Compartm
 
 		g.save()
 		g.translate(x, y)
-
+		sanitizeQualifier(node)
 		node.compartments.forEach(function (part: Compartment, i: number){
 			var textStyle = i == 0 ? style.title : style.body;
 			g.save()
 			g.translate(part.x, part.y)
 			setFont(config, textStyle.bold ? 'bold' : 'normal', textStyle.italic ? 'italic' : null)
+			
 			renderCompartment(part, style.stroke, textStyle, level+1)
 			g.restore()
 		})
@@ -77,6 +78,22 @@ export function render(graphics: Graphics, config: Config, compartment: Compartm
 		g.restore()
 	}
 
+	function sanitizeQualifier(node: Classifier){
+		// REMOVE qualifying mark from the node name
+		if(!config.qualifier){
+			return;
+		}
+		// Only sanitize the fist line (the class name)
+		let part: Compartment = node.compartments[0];
+		for ( let i:number=0; i< part.lines.length;i++){
+			let line = part.lines[i]
+			let qDx = line.indexOf(config.qualifier);
+			if (qDx!=-1){
+				let newName = line.substr(0, qDx);
+				part.lines[i] = newName
+			}
+		}
+	}
 	function strokePath(p: Vec[]){
 		if (config.edges === 'rounded'){
 			var radius = config.spacing * config.bendSize
