@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-var fs = require('fs')
+//var fs = require('fs')
 var nomnoml = require('./nomnoml.js')
 
 var [_, _, filename, outfile] = process.argv
@@ -18,10 +18,10 @@ if (filename == '--help' || process.argv.length == 2){
   return
 }
 
-var svg = nomnoml.renderSvg(nomnoml.compileFile(filename))
+//var svg = nomnoml.renderSvg(nomnoml.compileFile(filename))
 if (outfile){
-  fs.writeFileSync(outfile, svg)
+  //fs.writeFileSync(outfile, svg)
 }
 else {
-  console.log(svg)
+  //console.log(svg)
 }

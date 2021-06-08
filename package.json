@@ -1,6 +1,6 @@
 {
   "name": "@wcodm/nomnoml",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "The sassy UML renderer that generates diagrams from text; adjusted for WCO DM",
   "homepage": "http://www.nomnoml.com",
   "author": "Daniel Kallin <daniel.kallin@gmail.com>",

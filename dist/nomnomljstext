@@ -2143,12 +2143,12 @@
         });
     }
     function compileFile(filepath, maxImportDepth) {
-        //var fs = require('fs');
-        //var path = require('path');
-        var directory = ''//path.dirname(filepath);
+        var fs = require('fs');
+        var path = require('path');
+        var directory = path.dirname(filepath);
         var rootFileName = filepath.substr(directory.length);
         function loadFile(filename) {
-            // return fs.readFileSync(path.join(directory, filename), { encoding: 'utf8' });
+            return fs.readFileSync(path.join(directory, filename), { encoding: 'utf8' });
         }
         return processImports(loadFile(rootFileName), loadFile, maxImportDepth);
     }
