@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.5.1] - 2021-05-12
+
+- Adjustment for the WCO DM
+
 ## [1.4.0] - 2021-05-12
 
 - ball and socket connections for expressing required and provided interfaces

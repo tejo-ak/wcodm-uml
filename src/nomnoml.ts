@@ -38,7 +38,7 @@ export function draw(canvas: HTMLCanvasElement, code: string, scale?: number): {
   return parseAndRender(code, GraphicsCanvas(canvas), canvas, scale || 1)
 }
 
-export function renderSvg(code: string, document?: HTMLDocument): string {
+export function renderSvg(code: string, document?: Document): string {
   var skCanvas = GraphicsSvg('', document)
   var { config, layout } = parseAndRender(code, skCanvas, null, 1)
   return skCanvas.serialize({

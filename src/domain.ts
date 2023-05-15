@@ -19,6 +19,7 @@ export interface Config {
   spacing: number
   direction: 'TB'|'LR'
   fillArrows: boolean
+  alignTop: boolean
   arrowSize: number
   bendSize: number
   zoom: number

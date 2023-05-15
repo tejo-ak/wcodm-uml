@@ -149,7 +149,84 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 		clas.layoutWidth = clas.width + 2*config.edgeMargin
 		clas.layoutHeight = clas.height + 2*config.edgeMargin
 	}
+	function treeRelayout(c:Compartment, config?: Config):void{
+		const relStartMap:Map<string, any[]> = new Map();
+		const relEndMap:Map<string, any> = new Map();
+		const nodeMap:Map<string, Classifier> = new Map();
+		let tallest:number=0;
+		const padtop=10
 
+		const adjustTallest = (end:Classifier):void=>{
+			//if(endTop>tallest)return;
+			const pad = (tallest==0)?0:padtop
+			end.y = (tallest+pad)+(end.height/2)
+		}
+
+		const setTallest = (node:Classifier):void=>{
+			const bottom = node.y+(node.height/2)
+			if(bottom<tallest)return;
+			tallest=bottom;
+		}
+
+		const updateRel=(rel:any):void=>{
+			const nodeEnd = nodeMap.get(rel.end)
+			if(!nodeEnd)return;
+			const endTop = nodeEnd.y-(nodeEnd.height/2)
+			const endY = endTop + 15
+			rel.path[2].y = endY
+			rel.path[3].y = endY
+			rel.path[4].y = endY
+			
+			const nodeStart = nodeMap.get(rel.start)
+			if(!nodeStart)return;
+			const startTop = nodeStart.y-(nodeStart.height/2)
+			const startY = startTop + 15
+			//rel.path[0].y = startY
+			rel.path[1].y = startY
+
+			if(rel.path[1].y<rel.path[2].y)rel.path[1].x = rel.path[2].x
+
+		}
+		const alignTop = (node:Classifier, withNode:Classifier):void=>{
+			const refTop = withNode.y-(withNode.height/2)
+			const targetY = refTop +(node.height/2)
+			node.y = targetY;
+		}
+
+		const isAbove = (node:Classifier, withNode:Classifier):boolean=>{
+			const refTop = withNode.y-(withNode.height/2)
+			const targetTop = node.y-(node.height/2)
+			const yes = targetTop<refTop
+			return yes;
+		}
+		const updateParent = (n:Classifier):void=>{
+			setTallest(n)
+			const rel = relEndMap.get(n.name);
+			if(!rel)return;
+			const startNode = nodeMap.get(rel.start);
+			if(!startNode)return;
+			if(isAbove(startNode, n))return;
+			alignTop(startNode, n)
+			updateParent(startNode);
+		}
+		for (const rel of c.relations||[]) {
+			if(!relStartMap.has(rel.start))relStartMap.set(rel.start, new Array())
+			relStartMap.get(rel.start)?.push(rel)
+			relEndMap.set(rel.end, rel)
+		}
+		for (const node of c.nodes || []) {
+			nodeMap.set(node.name, node);
+		}
+		for (const node of c.nodes || []) {
+			if(relStartMap.has(node.name) && (relStartMap.get(node.name)||[]).length>0)continue;
+			adjustTallest(node)
+			updateParent(node)
+		}
+		for (const rel of c.relations||[]) {
+			updateRel(rel)
+		}
+	}
 	layoutCompartment(ast, 0, styles.CLASS)
+	if(!!config?.alignTop)treeRelayout(ast)
 	return ast
 }

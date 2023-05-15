@@ -1,0 +1,40 @@
+<script src="//unpkg.com/graphre/dist/graphre.js"></script>
+<script src="./nomnoml.js"></script>
+<body>
+    <div>UML Tejo
+    <div id="uml">
+
+    </div>
+    </div>
+</body>
+<script>
+    var k = document.getElementById('uml')
+    var src = `#direction:right\n#alignTop:true\n
+    [Root.2023]
+    [Consignee.848975e|
+(R015)Consignee...coded: an..32
+(R015)Consignee...coded: an..34
+(R015)Consignee...coded: an..35]
+[TransportContractDocument.b849cf9|
+(D023)Transport...umber: an..70]
+[Exporter.0dcd1d55a5|
+(R032)Exporter, coded: an..35]
+[Origin.fab8486|
+(413)Country o... name: an..35]
+[Packaging.68738d0|
+(144)Number of...kages: n..8] 
+
+ 
+[Root.2023]->[Exporter.0dcd1d55a5]
+[Root.2023]->[Consign ment.c56323d]
+[Root.2023]->[GoodsShipment.ff5ced2]
+[Root.2023]->[Packaging.68738d0]
+[Consign ment.c56323d]->[Consignee.848975e]
+[Consign ment.c56323d]->[TransportContractDocument.b849cf9]
+[GoodsShipment.ff5ced2]->[GovernmentAgencyGoodsItem.26f6bdd]
+[GovernmentAgencyGoodsItem.26f6bdd]->[Commodity.2d675ec]
+[Commodity.2d675ec]->[Constituent.b1cb78f]
+[Constituent.b1cb78f]->[Origin.fab8486]`
+    var svg = nomnoml.renderSvg(src)
+    k.innerHTML = svg
+</script>

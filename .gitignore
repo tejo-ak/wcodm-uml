@@ -6,6 +6,7 @@ nomnoml.sublime-workspace
 dist/nomnoml.compiled.js
 dist/nomnoml-core-parser.js
 dist/webapp.js
+dist/nomnoml.js
 deploy.sh
 package-lock.json
 cache/

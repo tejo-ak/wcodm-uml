@@ -4,7 +4,7 @@ nomnoml
 [![web site](https://img.shields.io/badge/web-nomnoml.com-brightgreen)](https://www.nomnoml.com)
 =======
 
-Hello, this is [nomnoml](http://www.nomnoml.com), a tool for drawing UML diagrams based on a simple syntax. It tries to keep its syntax visually as close as possible to the generated UML diagram without resorting to ASCII drawings.
+Hello, this is [nomnoml](http://www.nomnoml.com), forked and ajusted for the WCO DM, a tool for drawing UML diagrams based on a simple syntax. It tries to keep its syntax visually as close as possible to the generated UML diagram without resorting to ASCII drawings.
 
 Created by [Daniel Kallin](https://github.com/skanaar) with help from a group of [contributors](https://github.com/skanaar/nomnoml/graphs/contributors).
 
