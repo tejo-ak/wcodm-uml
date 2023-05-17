@@ -103,8 +103,22 @@ export function processImports(source: string, loadFile: FileLoader, maxImportDe
 }
 
 export function compileFile(filepath: string, maxImportDepth?: number): string {
-  var fs = require('fs')
-  var path = require('path')
+  try {
+    var fs = require('fs')
+    
+  } catch (error) {
+    console.error('Can\'t compile file as fs is not availabe')
+    return '';
+  }
+  
+  try {
+    var path = require('path')
+    
+  } catch (error) {
+    console.error('Can\'t compile file as path is not availabe')
+    return '';
+    
+  }
 
   var directory = path.dirname(filepath)
   var rootFileName = filepath.substr(directory.length)
