@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.5.2] - 2023-05-17
+- Catch execption loading fs and path
+
 ## [1.5.1] - 2021-05-12
 
 - Adjustment for the WCO DM
