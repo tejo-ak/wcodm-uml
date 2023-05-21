@@ -235,7 +235,7 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 			if(!rel){
 				n.column=0;
 				let c = 0;
-				console.log('ROOT, WCODM NONOML VERSION 1.5.2-beta.5')
+				console.log('ROOT, WCODM NONOML VERSION 1.5.2-beta.6')
 				//FORCE ROOT TOP to ZERO
 				n.y=n.height/2
 				for (const child of descendants||[]) {
