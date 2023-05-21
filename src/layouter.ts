@@ -149,14 +149,16 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 		clas.layoutWidth = clas.width + 2*config.edgeMargin
 		clas.layoutHeight = clas.height + 2*config.edgeMargin
 	}
-	function treeRelayout(c:Compartment, config?: Config):void{
+	function treeRelayout(c:Compartment, config?: Config):[number, number]{
 		const relStartMap:Map<string, any[]> = new Map();
 		const relEndMap:Map<string, any> = new Map();
 		const nodeMap:Map<string, Classifier> = new Map();
 		const movedNodeMap:Map<string, Classifier> = new Map();
-		let tallest:number=0;
+		let deepest:number=0;
+		let widest:number=0;
 		let depths:number[]=Array();
 		const padtop=20
+		const padright=10
 		let rootNode:TreeClassifier|undefined=undefined;
 
 		const ensureColumnDepth=(column: number)=>{
@@ -170,7 +172,11 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 			if(!node)return;
 			ensureColumnDepth(node.column||0);
 			//depths[node.column||0] = (depths[node.column||0]||0)+node.height+padtop;
-			depths[node.column||0]=node.y+(node.height/2)+padtop
+			const depth=node.y+(node.height/2)+padtop
+			const width=node.x+(node.width/2)+padright
+			if(depth>deepest)deepest=depth
+			if(width>=widest)widest=width
+			depths[node.column||0]=depth
 		}
 
 		const maxDepth = (column: number, span:number):number=>{
@@ -184,8 +190,8 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 
 		const setTallest = (node:Classifier):void=>{
 			const bottom = node.y+(node.height/2)
-			if(bottom<tallest)return;
-			tallest=bottom;
+			if(bottom<deepest)return;
+			//deepest=bottom;
 		}
 
 		const updateRel=(rel:any):void=>{
@@ -300,9 +306,15 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 		for (const rel of c.relations||[]) {
 			updateRel(rel)
 		}
+		return [deepest, widest]
 	}
 	layoutCompartment(ast, 0, styles.CLASS)
-	if(!!config?.alignTop)treeRelayout(ast)
+	if(!!config?.alignTop){
+		const [deeptest, widest] = treeRelayout(ast)
+		ast.height = deeptest+30
+		//ast.width = widest + 20
+		console.log('PROBE AST WIDTH', ast.width, widest)
+	}
 	return ast
 }
 
