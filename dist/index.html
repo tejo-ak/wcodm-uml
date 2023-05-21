@@ -2,39 +2,182 @@
 <script src="./nomnoml.js"></script>
 <body>
     <div>UML Tejo
-    <div id="uml">
+    <div style="background-color: aliceblue;" id="uml">
 
     </div>
     </div>
 </body>
 <script>
     var k = document.getElementById('uml')
-    var src = `#direction:right\n#alignTop:true\n
-    [Root.2023]
-    [Consignee.848975e|
-(R015)Consignee...coded: an..32
-(R015)Consignee...coded: an..34
-(R015)Consignee...coded: an..35]
-[TransportContractDocument.b849cf9|
-(D023)Transport...umber: an..70]
-[Exporter.0dcd1d55a5|
-(R032)Exporter, coded: an..35]
-[Origin.fab8486|
-(413)Country o... name: an..35]
-[Packaging.68738d0|
-(144)Number of...kages: n..8] 
-
- 
-[Root.2023]->[Exporter.0dcd1d55a5]
-[Root.2023]->[Consign ment.c56323d]
-[Root.2023]->[GoodsShipment.ff5ced2]
-[Root.2023]->[Packaging.68738d0]
-[Consign ment.c56323d]->[Consignee.848975e]
-[Consign ment.c56323d]->[TransportContractDocument.b849cf9]
-[GoodsShipment.ff5ced2]->[GovernmentAgencyGoodsItem.26f6bdd]
-[GovernmentAgencyGoodsItem.26f6bdd]->[Commodity.2d675ec]
-[Commodity.2d675ec]->[Constituent.b1cb78f]
-[Constituent.b1cb78f]->[Origin.fab8486]`
+    var src = `#direction:right\n#alignTop:true\n#fontSize:8\n#zoom:1\n
+    [Root.94df92d|
+(D047) Document/message status, coded]
+[Authentication.dc0a77f|
+(451) Actual Authentication Date
+(104) Authentication]
+[Agent.6f770bd|
+(R003) Agent - name
+(R004) Agent, coded]
+[Address.27cd353|
+(241) City name
+(242) Country, coded
+(243) Country sub-entity name
+(245) Postcode identification
+(519) Street name]
+[Contact.202c481|
+(246) Department or employee - Contact name]
+[Communication.ad658e0|
+(240) Communication number]
+[Itinerary.da432b3|
+(L006) Itinerary, code]
+[Consignment.8f4f8bd|
+(495) Value for carriage]
+[AcceptancePlace.dcc9da1|
+(L099) Place of acceptance, coded]
+[Carrier.2dfca17|
+(R011) Carrier - name]
+[Address.0ee1501|
+(241) City name
+(242) Country, coded
+(245) Postcode identification
+(519) Street name]
+[Contact.1b94d8d|
+(246) Department or employee - Contact name]
+[Communication.47653f1|
+(240) Communication number]
+[Consignee.7973554|
+(R014) Consignee name
+(R015) Consignee, coded]
+[Address.1a56f7f|
+(241) City name
+(242) Country, coded
+(243) Country sub-entity name
+(245) Postcode identification
+(519) Street name]
+[Contact.adbf4c7|
+(246) Department or employee - Contact name]
+[Communication.a7db869|
+(240) Communication number]
+[Classification.40ff106|
+(145) Commodity Classification]
+[DangerousGoods.2678b90|
+(506) United Nations Dangerous Goods Identifier (UNDG)
+(507) Hazard class identifier]
+[GoodsMeasure.ffe4abf|
+(470) Gross volume]
+[GoodsMeasure.8e22b8c|
+(131) Gross weight
+(130) Tariff quantity/ Supplementary quantity]
+[Origin.38f723b|
+(063) Country of origin, coded]
+[Packaging.db4c30f|
+(142) Shipping marks
+(144) Number of packages]
+[TransportEquipment.e4439cb|
+(159) Equipment identification number]
+[Consignor.9514f23|
+(R020) Consignor - name
+(R021) Consignor, coded]
+[Address.7cf8b17|
+(241) City name
+(242) Country, coded
+(243) Country sub-entity name
+(245) Postcode identification
+(519) Street name]
+[Contact.11fe246|
+(246) Department or employee - Contact name]
+[Communication.7764253|
+(240) Communication number]
+[GoodsMeasure.b821503|
+(131) Gross weight]
+[GoodsReceiptPlace.0cde745|
+(L003) Goods receipt place
+(L004) Goods receipt place, coded]
+[CustomsValuation.5c5c4df|
+(117) Freight costs]
+[Address.d37145b|
+(243) Country sub-entity name]
+[LoadingLocation.6b09282|
+(L009) Place of loading
+(L010) Place of loading, coded]
+[NotifyParty.172a196|
+(R045) Notify party
+(R046) Notify party, coded]
+[Address.8771c41|
+(241) City name
+(242) Country, coded
+(243) Country sub-entity name
+(245) Postcode identification
+(519) Street name]
+[Contact.5e27ec7|
+(246) Department or employee - Contact name]
+[Communication.5b1d0ee|
+(240) Communication number]
+[Temperature.2f069b0|
+(321) Storage Temperature Requirement
+(403) Minimum Storage Temperature Requirement
+(404) Maximum Storage Temperature Requirement]
+[TransportContractDocument.0fccf67|
+(D020) Transport Document Issue Date
+(D021) Transport Document Issue Place
+(091) Contract and carriage condition, coded]
+[TransportEquipment.4805a81|
+(227) Number of seals]
+[Seal.2c2cb4d|
+(165) Seal number]
+[TransportEquipmentMeasure.40c6090|
+(481) Tare weight]
+[UnloadingLocation.829a83f|
+(L012) Place of discharge
+(L013) Place of discharge, coded] 
+[Root.94df92d]->[Authentication.dc0a77f]
+[Root.94df92d]->[Agent.6f770bd]
+[Root.94df92d]->[BorderTransportMeans.3712daf]
+[Root.94df92d]->[Consignment.8f4f8bd]
+[Agent.6f770bd]->[Address.27cd353]
+[Agent.6f770bd]->[Contact.202c481]
+[Agent.6f770bd]->[Communication.ad658e0]
+[BorderTransportMeans.3712daf]->[Itinerary.da432b3]
+[Consignment.8f4f8bd]->[AcceptancePlace.dcc9da1]
+[Consignment.8f4f8bd]->[Carrier.2dfca17]
+[Consignment.8f4f8bd]->[Consignee.7973554]
+[Consignment.8f4f8bd]->[ConsignmentItem.c4d0851]
+[Consignment.8f4f8bd]->[Consignor.9514f23]
+[Consignment.8f4f8bd]->[GoodsMeasure.b821503]
+[Consignment.8f4f8bd]->[GoodsReceiptPlace.0cde745]
+[Consignment.8f4f8bd]->[HouseConsignment.d4658bd]
+[Consignment.8f4f8bd]->[IntermediateCarrier.6a08d8d]
+[Consignment.8f4f8bd]->[LoadingLocation.6b09282]
+[Consignment.8f4f8bd]->[NotifyParty.172a196]
+[Consignment.8f4f8bd]->[Temperature.2f069b0]
+[Consignment.8f4f8bd]->[TransportContractDocument.0fccf67]
+[Consignment.8f4f8bd]->[TransportEquipment.4805a81]
+[Consignment.8f4f8bd]->[UnloadingLocation.829a83f]
+[Carrier.2dfca17]->[Address.0ee1501]
+[Carrier.2dfca17]->[Contact.1b94d8d]
+[Carrier.2dfca17]->[Communication.47653f1]
+[Consignee.7973554]->[Address.1a56f7f]
+[Consignee.7973554]->[Contact.adbf4c7]
+[Consignee.7973554]->[Communication.a7db869]
+[ConsignmentItem.c4d0851]->[Commodity.692b70a]
+[ConsignmentItem.c4d0851]->[GoodsMeasure.8e22b8c]
+[ConsignmentItem.c4d0851]->[Origin.38f723b]
+[ConsignmentItem.c4d0851]->[Packaging.db4c30f]
+[ConsignmentItem.c4d0851]->[TransportEquipment.e4439cb]
+[Commodity.692b70a]->[Classification.40ff106]
+[Commodity.692b70a]->[DangerousGoods.2678b90]
+[Commodity.692b70a]->[GoodsMeasure.ffe4abf]
+[Consignor.9514f23]->[Address.7cf8b17]
+[Consignor.9514f23]->[Contact.11fe246]
+[Consignor.9514f23]->[Communication.7764253]
+[HouseConsignment.d4658bd]->[CustomsValuation.5c5c4df]
+[IntermediateCarrier.6a08d8d]->[Address.d37145b]
+[NotifyParty.172a196]->[Address.8771c41]
+[NotifyParty.172a196]->[Contact.5e27ec7]
+[NotifyParty.172a196]->[Communication.5b1d0ee]
+[TransportEquipment.4805a81]->[Seal.2c2cb4d]
+[TransportEquipment.4805a81]->[TransportEquipmentMeasure.40c6090]
+`
     var svg = nomnoml.renderSvg(src)
     k.innerHTML = svg
 </script>

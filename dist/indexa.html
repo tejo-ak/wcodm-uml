@@ -1,0 +1,69 @@
+<script src="//unpkg.com/graphre/dist/graphre.js"></script>
+<script src="./nomnoml.js"></script>
+<body>
+    <div>UML Tejo
+    <div style="background-color: aliceblue;" id="uml">
+
+    </div>
+    </div>
+</body>
+<script>
+    var k = document.getElementById('uml')
+    var src = `#direction:right\n#alignTop:true\n#fontSize:8\n#zoom:1\n
+    [Root.2023]
+[Address.fab8483|
+(A039) Address name: an..35    
+]
+    [Consignee.848975e|
+(R015)Consignee...coded: an..32
+(R015)Consignee...coded: an..34
+(R015)Consignee...coded: an..35
+(R015)Consignee...coded: an..36
+(R015)Consignee...coded: an..37
+(R015)Consignee...coded: an..38
+(R015)Consignee...coded: an..39
+(R015)Consignee...coded: an..40
+]
+[TransportContractDocument.b849cf9|
+(D023)Transport...umber: an..70
+(D023)Transport...umber: an..71
+]
+[Exporter.0dcd1d55a5|
+(R032)Exporter, coded: an..35
+(R032)Exporter, coded: an..36
+(R032)Exporter, coded: an..37
+(R032)Exporter, coded: an..38
+(R032)Exporter, coded: an..39
+(R032)Exporter, coded: an..40
+(R032)Exporter, coded: an..41
+(R032)Exporter, coded: an..42
+(R032)Exporter, coded: an..43
+(R032)Exporter, coded: an..44
+(R032)Exporter, coded: an..45
+(R032)Exporter, coded: an..46
+]
+[Importer.b843f9|
+(413)Country o... name: an..35
+]
+[Origin.fab8486|
+(413)Country o... name: an..35]
+[Packaging.68738d0|
+(144)Number of...kages: n..8] 
+
+ 
+[Root.2023]->[Consignment.c56323d]
+[Root.2023]->[Exporter.0dcd1d55a5]
+[Consignment.c56323d]->[Consignee.848975e]
+[Consignment.c56323d]->[TransportContractDocument.b849cf9]
+[TransportContractDocument.b849cf9]->[Importer.b843f9]
+[Root.2023]->[GoodsShipment.ff5ced2]
+[Root.2023]->[Packaging.68738d0]
+[GoodsShipment.ff5ced2]->[GovernmentAgencyGoodsItem.26f6bdd]
+[GovernmentAgencyGoodsItem.26f6bdd]->[Commodity.2d675ec]
+[Commodity.2d675ec]->[Constituent.b1cb78f]
+[Consignee.848975e]->[Address.fab8483]
+[Consignee.848975e]->[Contact.fab84fd]
+[Constituent.b1cb78f]->[Origin.fab8486]`
+    var svg = nomnoml.renderSvg(src)
+    k.innerHTML = svg
+</script>

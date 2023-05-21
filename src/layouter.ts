@@ -153,13 +153,33 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 		const relStartMap:Map<string, any[]> = new Map();
 		const relEndMap:Map<string, any> = new Map();
 		const nodeMap:Map<string, Classifier> = new Map();
+		const movedNodeMap:Map<string, Classifier> = new Map();
 		let tallest:number=0;
-		const padtop=10
+		let depths:number[]=Array();
+		const padtop=20
+		let rootNode:TreeClassifier|undefined=undefined;
 
-		const adjustTallest = (end:Classifier):void=>{
-			//if(endTop>tallest)return;
-			const pad = (tallest==0)?0:padtop
-			end.y = (tallest+pad)+(end.height/2)
+		const ensureColumnDepth=(column: number)=>{
+			if(depths.length<=column){
+				for (let i = 0; i < (column+1)-depths.length; i++) {
+					depths.push(0);		
+				}
+			}
+		}
+		const setColumnDepth = (node:TreeClassifier)=>{
+			if(!node)return;
+			ensureColumnDepth(node.column||0);
+			//depths[node.column||0] = (depths[node.column||0]||0)+node.height+padtop;
+			depths[node.column||0]=node.y+(node.height/2)+padtop
+		}
+
+		const maxDepth = (column: number, span:number):number=>{
+			const includedDepths:number[]=new Array()
+			const maxCol = (depths.length>column+span)?column+span+1:depths.length
+			for (let i = column; i < maxCol; i++) {
+				includedDepths.push(depths[i])		
+			}
+			return Math.max(...includedDepths)
 		}
 
 		const setTallest = (node:Classifier):void=>{
@@ -188,26 +208,81 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 
 		}
 		const alignTop = (node:Classifier, withNode:Classifier):void=>{
+			if(node.name.toLowerCase().startsWith('root')){
+				console.log('align top', node.name, withNode?.name, movedNodeMap.has(withNode.name))
+			}
 			const refTop = withNode.y-(withNode.height/2)
 			const targetY = refTop +(node.height/2)
 			node.y = targetY;
 		}
 
-		const isAbove = (node:Classifier, withNode:Classifier):boolean=>{
-			const refTop = withNode.y-(withNode.height/2)
-			const targetTop = node.y-(node.height/2)
-			const yes = targetTop<refTop
-			return yes;
+		const addChild=(parent:TreeClassifier, child:Classifier):void=>{
+			if(!parent)return;
+			if(!parent.children)parent.children = new Array();
+			parent.children.push(child)
 		}
-		const updateParent = (n:Classifier):void=>{
+
+		const updateParent = (n:TreeClassifier, descendants:TreeClassifier[]=new Array()):void=>{
 			setTallest(n)
 			const rel = relEndMap.get(n.name);
-			if(!rel)return;
-			const startNode = nodeMap.get(rel.start);
-			if(!startNode)return;
-			if(isAbove(startNode, n))return;
-			alignTop(startNode, n)
-			updateParent(startNode);
+			//NODE THAT DOESN'T HAS ROLE AS END NODE IS ROOT
+			if(!rel){
+				n.column=0;
+				let c = 0;
+				console.log('ROOT, WCODM NONOML VERSION 1.5.2-beta.5')
+				//FORCE ROOT TOP to ZERO
+				n.y=n.height/2
+				for (const child of descendants||[]) {
+					alignTop(child, n)
+					child.column = (descendants||[]).length-c
+					setColumnDepth(child)
+					c++;
+				}
+				return
+			};
+			const parentNode: TreeClassifier|undefined = nodeMap.get(rel.start);
+			if(!parentNode)return;
+
+			//IF THE PARENT IS NOT BELOW THE CURRENT NODE, THEN DO NOTHING AS IT LIKELY MOVED
+			if(movedNodeMap.has(parentNode.name)){
+				n.column = (parentNode.column||0)+1;
+				const deepest = maxDepth(n.column||0, descendants.length)
+				//padSibling(n, parentNode)
+				n.y = deepest+(n.height/2)
+
+				setColumnDepth(n)
+				addChild(parentNode, n);
+				let i = 0;
+				for (const child of descendants||[]) {
+					alignTop(child, n)
+					child.column = ((descendants||[]).length-i)+n.column
+					setColumnDepth(child)
+					i++;
+				}
+				return
+			};
+
+			alignTop(parentNode, n)
+			addChild(parentNode, n);
+			descendants.push(n);
+			movedNodeMap.set(parentNode.name, parentNode);
+			updateParent(parentNode, descendants);
+		}
+		const findLeave = (node: TreeClassifier|undefined)=>{
+			if(!node)return;
+			const rels = relStartMap.get(node.name);
+			if(!rels || rels.length<=0){
+				// THIS IS A LEAVE
+				updateParent(node);
+
+			}
+			node.members = node.members||[];
+			for (const rel of rels||[]) {
+				const child = nodeMap.get(rel.end)
+				if(!child)continue
+				node.members.push(child)
+				findLeave(child)
+			}
 		}
 		for (const rel of c.relations||[]) {
 			if(!relStartMap.has(rel.start))relStartMap.set(rel.start, new Array())
@@ -216,12 +291,12 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 		}
 		for (const node of c.nodes || []) {
 			nodeMap.set(node.name, node);
+			//THIS NODE IS ROOT
+			if(relStartMap.has(node.name) && !relEndMap.has(node.name))rootNode = node;
+			//console.log('REG NODE ', node.name)
 		}
-		for (const node of c.nodes || []) {
-			if(relStartMap.has(node.name) && (relStartMap.get(node.name)||[]).length>0)continue;
-			adjustTallest(node)
-			updateParent(node)
-		}
+		findLeave(rootNode)
+		//console.log('ROOT STATUS, ', rootNode)
 		for (const rel of c.relations||[]) {
 			updateRel(rel)
 		}
@@ -230,3 +305,5 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 	if(!!config?.alignTop)treeRelayout(ast)
 	return ast
 }
+
+type TreeClassifier = Classifier & {children?:TreeClassifier[], column?:number, members?:TreeClassifier[]}
