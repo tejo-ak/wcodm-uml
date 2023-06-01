@@ -1,0 +1,17 @@
+<script src="//unpkg.com/graphre/dist/graphre.js"></script>
+<script src="./nomnoml.js"></script>
+<body>
+    <div>UML Tejo
+    <div style="background-color: aliceblue;" id="uml">
+
+    </div>
+    </div>
+</body>
+<script>
+    var k = document.getElementById('uml')
+    var src = `#direction:right\n#alignTop:true\n#fontSize:8\n#zoom:1\n
+    [Declaration.94df92d|Test]
+    `
+    var svg = nomnoml.renderSvg(src)
+    k.innerHTML = svg
+</script>

@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.5.2-beta.6] - 2023-05-17
+## [1.5.2-beta.7] - 2023-05-17
 - Catch execption loading fs and path
 
 ## [1.5.1] - 2021-05-12

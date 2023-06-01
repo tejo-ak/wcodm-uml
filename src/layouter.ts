@@ -235,7 +235,7 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 			if(!rel){
 				n.column=0;
 				let c = 0;
-				console.log('ROOT, WCODM NONOML VERSION 1.5.2-beta.6')
+				console.log('ROOT, WCODM NONOML VERSION 1.5.2-beta.7')
 				//FORCE ROOT TOP to ZERO
 				n.y=n.height/2
 				for (const child of descendants||[]) {
@@ -298,9 +298,13 @@ export function layout(measurer: Measurer, config: Config, ast: Compartment): Co
 		for (const node of c.nodes || []) {
 			nodeMap.set(node.name, node);
 			//THIS NODE IS ROOT
-			if(relStartMap.has(node.name) && !relEndMap.has(node.name))rootNode = node;
+			if(!relEndMap.has(node.name)){
+				rootNode = node;
+				setColumnDepth(rootNode)
+			};
 			//console.log('REG NODE ', node.name)
 		}
+		console.log('ROOTNODE: ', rootNode)
 		findLeave(rootNode)
 		//console.log('ROOT STATUS, ', rootNode)
 		for (const rel of c.relations||[]) {
